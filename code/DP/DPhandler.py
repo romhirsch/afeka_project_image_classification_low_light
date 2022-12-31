@@ -57,6 +57,30 @@ classes = ['airliner',
 
 classes = ["bicycle", "boat", "bus", "car",
            "cat", "dog", "motorcycle", "person"]
+def print_array_info(v):
+    print("{} is of type {} with shape {} and dtype {}".format(v,
+                                                           eval("type({})".format(v)),
+                                                           eval("{}.shape".format(v)),
+                                                           eval("{}.dtype".format(v))
+                                                           ))
+
+def show_samples(array_of_images, label):
+    n = array_of_images.shape[0]
+    total_rows = 1+int((n-1)/5)
+    total_columns = 5
+    fig = plt.figure()
+    gridspec_array = fig.add_gridspec(total_rows, total_columns)
+
+    for i, (img, label) in enumerate(zip(array_of_images, label)):
+        row = int(i/5)
+        col = i % 5
+        ax = fig.add_subplot(gridspec_array[row, col])
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+        ax.set_title(classes[int(label)])
+        ax.imshow(img)
+
+    plt.show()
 # classes = ['bicycle',
 #  'boat',
 #  'bottle',
@@ -90,6 +114,17 @@ def uint8c(x):
     return np.uint8(x2)
 
 seed_aug = 1
+
+def preproceessing_adaptive_histogram_equalization(img):
+    # configure CLAHE
+    img = np.uint8(img)
+    clahe_model = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
+    # For ease of understanding, we explicitly equalize each channel individually
+    colorimage_b = clahe_model.apply(img[:, :, 0])
+    colorimage_g = clahe_model.apply(img[:, :, 1])
+    colorimage_r = clahe_model.apply(img[:, :, 2])
+    img_ahe = np.stack((colorimage_b, colorimage_g, colorimage_r), axis=2)
+    return img_ahe
 
 def preprocess(p=0.5):
     def _preprocess(x):
@@ -313,7 +348,6 @@ class DPhandler(object):
                 shuffle=True,
                 class_mode="categorical",
                 target_size=(self.image_size, self.image_size))
-
         self.step_per_epoch_train = len(self.train_generator)
         self.step_per_epoch_valid = len(self.validation_generator)
         print(self.batch_training, len(self.train_generator), self.batch_valid, len(self.validation_generator))
@@ -398,14 +432,14 @@ class DPhandler(object):
         return np.max(self.fit_history.history['val_accuracy'])
 
     @staticmethod
-    def load_dataset(dataset_dir, preprocess, classes, BATCH_SIZE=1, image_size=224):
+    def load_dataset(dataset_dir, preprocess, classes, BATCH_SIZE=1, image_size=224, shuffle=False):
         data_generator = ImageDataGenerator(preprocessing_function=preprocess)
         ds = data_generator.flow_from_directory(
             directory=dataset_dir,
             target_size=(image_size, image_size),
             batch_size=BATCH_SIZE,
             classes=classes,
-            shuffle=False,
+            shuffle=shuffle,
             seed=123
         )
         return ds
@@ -613,15 +647,15 @@ def load_exdark_datasets():
                        'window': ds_ExDark_window, 'shadow': ds_ExDark_shadow, 'Twilight': ds_ExDark_Twilight}
     return ds_exdark_tests
 
-def load_test_dataset():
+def load_test_dataset(preprocess):
     # load test datasets
     ds_exdark_tests= load_exdark_datasets()
     #df_test = DPhandler.Create_df_dataset_from_directories([PathDatasets.COCO2017_TEST.value], percent=1)
-    ds_test = DPhandler.load_dataset(PathDatasets.COCO2017_TEST.value, preprocess_input, classes)
-    ds_aug1 = DPhandler.load_dataset(PathDatasets.coco_aug1.value, preprocess_input, classes)
-    ds_aug2 = DPhandler.load_dataset(PathDatasets.coco_aug2.value, preprocess_input, classes)
-    ds_aug3 = DPhandler.load_dataset(PathDatasets.coco_aug3.value, preprocess_input, classes)
-    ds_aug4 = DPhandler.load_dataset(PathDatasets.coco_aug4.value, preprocess_input, classes)
+    ds_test = DPhandler.load_dataset(PathDatasets.COCO2017_TEST.value, preprocess, classes)
+    ds_aug1 = DPhandler.load_dataset(PathDatasets.coco_aug1.value, preprocess, classes)
+    ds_aug2 = DPhandler.load_dataset(PathDatasets.coco_aug2.value, preprocess, classes)
+    ds_aug3 = DPhandler.load_dataset(PathDatasets.coco_aug3.value, preprocess, classes)
+    ds_aug4 = DPhandler.load_dataset(PathDatasets.coco_aug4.value, preprocess, classes)
     ds_augs = [ds_aug1, ds_aug2, ds_aug3, ds_aug4]
     #ds_ExDark = DPhandler.load_dataset(PathDatasets.EXDARK.value, preprocess_input, classes)
     ds_ExDark_test = DPhandler.load_dataset(PathDatasets.EXDARK_TEST.value, preprocess_input, classes)
@@ -672,7 +706,7 @@ def dark_ratio(params, do_train, real_dark_train, ds_tests, ds_names, train_dire
 
         print(colored(f"{ModelName}", 'green'))
         checkpoint_path, figure_path, \
-        saved_models_path = get_directories_and_paths(ModelName)
+        checkpoint_path, figure_path, saved_models_path = get_directories_and_paths(ModelName)
         if do_train == False:
             # load our trained model
             dp = load_saved_model(saved_models_path, ModelName, figure_path)
@@ -689,7 +723,7 @@ def dark_ratio(params, do_train, real_dark_train, ds_tests, ds_names, train_dire
 def run_one(params, do_train, train_directories, ds_tests, ds_names, df_summery, do_test=True):
     print(colored(f"{params['ModelName']}", 'green'))
     checkpoint_path, figure_path, \
-    saved_models_path = get_directories_and_paths(params['ModelName'])
+    checkpoint_path, figure_path, saved_models_path = get_directories_and_paths(params['ModelName'])
     if do_train == False:
         # load our trained model
         dp = load_saved_model(saved_models_path, params['ModelName'], figure_path)
@@ -793,10 +827,17 @@ def get_directories_and_paths(ModelName):
     saved_models_path = os.path.join(Path, ModelName + ".h")
     return checkpoint_path, figure_path, saved_models_path
 
+def plot_exmaple_ds(path):
+    ds_test = DPhandler.load_dataset(path, preprocess_input, classes, BATCH_SIZE=15, shuffle=True)
+    for x_batch, y_batch in ds_test:
+        label_ind = np.argmax(y_batch, axis=1)
+        show_samples(np.uint8(x_batch), label_ind)
+        break
 class Test_options(Flag):
     RATIO = auto()
     ONE_TEST = auto()
     GRID_SEARCH = auto()
+    Enhance = auto()
 
 if __name__ == '__main__':
     params = get_model_parameters()
@@ -805,25 +846,41 @@ if __name__ == '__main__':
     do_train = False
     real_dark_train = False
     seed_aug = 0
-    test_option = Test_options.RATIO
+    test_option = Test_options.Enhance
     grid_search_params = {'lr_schedule': True, 'batch_training': [32, 64, 128],
-                          'batch_valid': [32, 64, 128], 'ModelName': ['grid1', 'grid2', 'grid3' ]}
+                          'batch_valid': [32, 64, 128], 'ModelName': ['grid1', 'grid2', 'grid3']}
 
     # create dataframe for results
     keys_gen = ['Model', 'Dataset', 'acc_val', 'Accuracy', 'Precision', 'Recall', 'F1-score'] + classes
     df_summery = pd.DataFrame(np.empty((300, len(keys_gen)))*np.nan, columns=keys_gen)
+
+    #plot_exmaple_ds(PathDatasets.EXDARK_TEST.value)
     # load test datasets
-    ds_tests, ds_names = load_test_dataset()
+    #ds_tests, ds_names = load_test_dataset(preprocess_input)
+
     if Test_options.RATIO in test_option:
+        ds_tests, ds_names = load_test_dataset(preprocess_input)
         dark_ratio(params, do_train, real_dark_train, ds_tests, ds_names, train_directories, df_summery, ratio)
     if Test_options.ONE_TEST in test_option:
+        ds_tests, ds_names = load_test_dataset(preprocess_input)
         run_one(params, do_train, train_directories, ds_tests, ds_names, df_summery)
     if Test_options.GRID_SEARCH in test_option:
+        ds_tests, ds_names = load_test_dataset(preprocess_input)
         max_size = max([len(v) for v in grid_search_params.values()])
         for i in range(max_size):
             params = edit_parameters_grid_search(grid_search_params, params, i)
             df_summery = run_one(params, do_train, train_directories, ds_tests, ds_names, df_summery)
-
             df_summery.to_excel(f"{params['ModelName']}.xlsx")
+    if Test_options.Enhance in test_option:
+        # do Enhance image
+        ds_tests, ds_names = load_test_dataset(preproceessing_adaptive_histogram_equalization)
+        # create a CLAHE object (Arguments are optional).
+        checkpoint_path, figure_path, \
+        saved_models_path = get_directories_and_paths(params['ModelName']+ '_10_0')
+        dp = load_saved_model(saved_models_path, params['ModelName'] + '_10_0', figure_path + 'AHE')
+        df_summery = evaluate_model_on_datasets(dp, df_summery, ds_tests, ds_names, params['ModelName'])
+        df_summery.to_excel(params['ModelName'] + 'AHE' + '.xlsx')
+        pass
+
 
 
