@@ -115,10 +115,32 @@ def uint8c(x):
 
 seed_aug = 1
 
+def show_two_exmaples(img1, img2):
+    fig, ax = plt.subplots(1, 2);
+    ax[0].imshow(img1);
+    ax[0].get_xaxis().set_visible(False)
+    ax[0].get_yaxis().set_visible(False)
+    ax[1].imshow(img2)
+    ax[1].get_xaxis().set_visible(False)
+    ax[1].get_yaxis().set_visible(False)
+
+def preprocessing_histogram_equalization(img):
+    img = np.uint8(img)
+    # convert from RGB color-space to YCrCb
+    ycrcb_img = cv2.cvtColor(img, cv2.COLOR_RGB2YCrCb)
+
+    # equalize the histogram of the Y channel
+    ycrcb_img[:, :, 0] = cv2.equalizeHist(ycrcb_img[:, :, 0])
+
+    # convert back to RGB color-space from YCrCb
+    equalized_img = cv2.cvtColor(ycrcb_img, cv2.COLOR_YCrCb2RGB)
+
+    return equalized_img
+
 def preproceessing_adaptive_histogram_equalization(img):
     # configure CLAHE
     img = np.uint8(img)
-    clahe_model = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
+    clahe_model = cv2.createCLAHE(clipLimit=5, tileGridSize=(8, 8))
     # For ease of understanding, we explicitly equalize each channel individually
     colorimage_b = clahe_model.apply(img[:, :, 0])
     colorimage_g = clahe_model.apply(img[:, :, 1])
@@ -647,20 +669,25 @@ def load_exdark_datasets():
                        'window': ds_ExDark_window, 'shadow': ds_ExDark_shadow, 'Twilight': ds_ExDark_Twilight}
     return ds_exdark_tests
 
-def load_test_dataset(preprocess):
+def load_test_dataset(preprocess, only_dark=False):
     # load test datasets
-    ds_exdark_tests= load_exdark_datasets()
+    #ds_exdark_tests= load_exdark_datasets()
     #df_test = DPhandler.Create_df_dataset_from_directories([PathDatasets.COCO2017_TEST.value], percent=1)
-    ds_test = DPhandler.load_dataset(PathDatasets.COCO2017_TEST.value, preprocess, classes)
     ds_aug1 = DPhandler.load_dataset(PathDatasets.coco_aug1.value, preprocess, classes)
     ds_aug2 = DPhandler.load_dataset(PathDatasets.coco_aug2.value, preprocess, classes)
     ds_aug3 = DPhandler.load_dataset(PathDatasets.coco_aug3.value, preprocess, classes)
     ds_aug4 = DPhandler.load_dataset(PathDatasets.coco_aug4.value, preprocess, classes)
     ds_augs = [ds_aug1, ds_aug2, ds_aug3, ds_aug4]
     #ds_ExDark = DPhandler.load_dataset(PathDatasets.EXDARK.value, preprocess_input, classes)
-    ds_ExDark_test = DPhandler.load_dataset(PathDatasets.EXDARK_TEST.value, preprocess_input, classes)
-    ds_tests = [ds_test, ds_ExDark_test] + ds_augs #+ list(ds_exdark_tests.values())
-    ds_names = ['Test', 'ExDark_test'] + ['level1', 'level2', 'level3', 'level4'] #+ list(ds_exdark_tests.keys())
+    ds_ExDark_test = DPhandler.load_dataset(PathDatasets.EXDARK_TEST.value, preprocess, classes)
+    if only_dark:
+        ds_tests = [ds_ExDark_test] + ds_augs #+ list(ds_exdark_tests.values())
+        ds_names = ['ExDark_test'] + ['level1', 'level2', 'level3', 'level4'] #+ list(ds_exdark_tests.keys())
+    else:
+        ds_test = DPhandler.load_dataset(PathDatasets.COCO2017_TEST.value, preprocess, classes)
+        ds_tests = [ds_test, ds_ExDark_test] + ds_augs #+ list(ds_exdark_tests.values())
+        ds_names = ['Test', 'ExDark_test'] + ['level1', 'level2', 'level3', 'level4'] #+ list(ds_exdark_tests.keys())
+
     return ds_tests, ds_names
 
 
@@ -833,6 +860,7 @@ def plot_exmaple_ds(path):
         label_ind = np.argmax(y_batch, axis=1)
         show_samples(np.uint8(x_batch), label_ind)
         break
+
 class Test_options(Flag):
     RATIO = auto()
     ONE_TEST = auto()
@@ -847,9 +875,10 @@ if __name__ == '__main__':
     real_dark_train = False
     seed_aug = 0
     test_option = Test_options.Enhance
+
+    enhance_methods = {'AHE': preproceessing_adaptive_histogram_equalization, 'HE': preprocessing_histogram_equalization}
     grid_search_params = {'lr_schedule': True, 'batch_training': [32, 64, 128],
                           'batch_valid': [32, 64, 128], 'ModelName': ['grid1', 'grid2', 'grid3']}
-
     # create dataframe for results
     keys_gen = ['Model', 'Dataset', 'acc_val', 'Accuracy', 'Precision', 'Recall', 'F1-score'] + classes
     df_summery = pd.DataFrame(np.empty((300, len(keys_gen)))*np.nan, columns=keys_gen)
@@ -873,13 +902,14 @@ if __name__ == '__main__':
             df_summery.to_excel(f"{params['ModelName']}.xlsx")
     if Test_options.Enhance in test_option:
         # do Enhance image
-        ds_tests, ds_names = load_test_dataset(preproceessing_adaptive_histogram_equalization)
-        # create a CLAHE object (Arguments are optional).
-        checkpoint_path, figure_path, \
-        saved_models_path = get_directories_and_paths(params['ModelName']+ '_10_0')
-        dp = load_saved_model(saved_models_path, params['ModelName'] + '_10_0', figure_path + 'AHE')
-        df_summery = evaluate_model_on_datasets(dp, df_summery, ds_tests, ds_names, params['ModelName'])
-        df_summery.to_excel(params['ModelName'] + 'AHE' + '.xlsx')
+        for name_pre, preprocess in enhance_methods.items():
+            ds_tests, ds_names = load_test_dataset(preprocess, only_dark=True)
+            # create a CLAHE object (Arguments are optional).
+            checkpoint_path, figure_path, \
+            saved_models_path = get_directories_and_paths(params['ModelName']+ '_10_0')
+            dp = load_saved_model(saved_models_path, params['ModelName'] + '_10_0', figure_path + '_' + name_pre)
+            df_summery = evaluate_model_on_datasets(dp, df_summery, ds_tests, ds_names, params['ModelName'] + '_' + name_pre)
+            df_summery.to_excel(params['ModelName'] + '_' + name_pre + '.xlsx')
         pass
 
 
