@@ -135,12 +135,12 @@ class Dataset_creator():
 
 
 if __name__ == '__main__':
-    ds_names = ['COCO_TRAIN', 'COCO_TEST', PathDatasets.coco_aug1.name,
+    ds_names = ['COCO', PathDatasets.lol_high.name, PathDatasets.coco_aug1.name,
                 PathDatasets.coco_aug2.name, PathDatasets.coco_aug3.name,
-                PathDatasets.coco_aug4.name, PathDatasets.lol_low.name, PathDatasets.lol_high.name, PathDatasets.EXDARK.name]
-    img_folders =  [PathDatasets.COCO2017_TRAIN.value, PathDatasets.COCO2017_TEST.value, PathDatasets.coco_aug1.value,
+                PathDatasets.coco_aug4.name, PathDatasets.lol_low.name, PathDatasets.EXDARK.name]
+    img_folders =  [PathDatasets.COCO2017_TRAIN.value, PathDatasets.lol_high.value, PathDatasets.COCO2017_TEST.value, PathDatasets.coco_aug1.value,
                 PathDatasets.coco_aug2.value, PathDatasets.coco_aug3.value,
-                PathDatasets.coco_aug4.value, PathDatasets.lol_low.value, PathDatasets.lol_high.value, PathDatasets.EXDARK.value]
+                PathDatasets.coco_aug4.value, PathDatasets.lol_low.value, PathDatasets.EXDARK.value]
     # ds_names = [ PathDatasets.lol_low.name, PathDatasets.lol_high.name]
     # img_folders = [ PathDatasets.lol_low.value, PathDatasets.lol_high.value]
     df_all = pd.DataFrame()

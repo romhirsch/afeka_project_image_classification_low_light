@@ -62,7 +62,7 @@ def pair_compare(img, target_dark, gamma, alpha, beta):
     img_dark = uint8(img_dark*255)
     img = uint8(img*255)
     plot_img(img, 'normal light image')
-    plot_img(img_dark, 'Synthesis low-light image')
+    plot_img(img_dark, 'Synthetic low-light image')
     plot_img(target_dark, 'references low-light image')
     print('blur estimate target: ', variance_of_laplacian(target_dark))
     print('blur estimate synthesis: ', variance_of_laplacian(img_dark))
@@ -74,7 +74,7 @@ def pair_compare(img, target_dark, gamma, alpha, beta):
 
     corrlation = np.corrcoef(ydark, yreff)[0, 1]
     fig, ax = plt.subplots(1)
-    ax.set_title(f'histogram Y channel in YCbCr corr={round(corrlation,2)}, ks_2samp={pvalue}')
+    ax.set_title(f'histogram Y channel in YCbCr corr={round(corrlation,2)}')
     ax.plot(ydark, color='r', label='Y synthesis')
     ax.plot(yorig, color='g', label='Y orig')
     ax.plot(yreff, color='b', label='Y references')
@@ -172,6 +172,7 @@ def plot_differ_param(path):
             ax[i, j].imshow(im2)
             ax[i, j].axis
             ax[i, j].axis('off')
+            plt.tight_layout()
 
 
 def PSNR(original, compressed):
@@ -186,32 +187,34 @@ def PSNR(original, compressed):
 
 if __name__ == '__main__':
     save_folder = r"E:\coco_aug_1"
-    # dict_res = {'Pearson':[], 'Kolmogorov-Smirnov':[], 'Image':[]}
-    # pimgs = [r"E:\dataset\lol\our485\high\9.png", r"E:\dataset\lol\our485\high\50.png",
-    #          r"E:\dataset\lol\our485\high\233.png", r"E:\dataset\lol\our485\high\84.png",
-    #          r"E:\dataset\lol\our485\high\721.png", r"E:\dataset\lol\our485\high\738.png",]
-    # ptarget_darks = [r"E:\dataset\lol\our485\low\9.png", r"E:\dataset\lol\our485\low\50.png",
-    #                  r"E:\dataset\lol\our485\low\233.png", r"E:\dataset\lol\our485\low\84.png",
-    #                  r"E:\dataset\lol\our485\low\721.png", r"E:\dataset\lol\our485\low\738.png"]
-    #
-    # for pimg, ptarget_dark in zip(pimgs, ptarget_darks):
-    #     img = cv2.imread(pimg)
-    #     target_dark = cv2.imread(ptarget_dark)
-    #     #plot_img(target_dark)
-    #     gamma, alpha, beta = find_params_from_target(img, target_dark)
-    #     print(gamma, alpha, beta)
-    #     pval, corr = pair_compare(img, target_dark, gamma, alpha, beta)
-    #     plt.close('all')
-    #     dict_res['Pearson'].append(corr)
-    #     dict_res['Kolmogorov-Smirnov'].append(pval)
-    #     dict_res['Image'].append(os.path.basename(pimg))
-    # import pandas as pd
-    # df = pd.DataFrame(dict_res)
-    # df.to_excel('compare_augmetation')
-    # img_dark = low_light_transform(img, 1, 1, 5)
+    dict_res = {'Pearson':[], 'Kolmogorov-Smirnov':[], 'Image':[]}
+    pimgs = [r"E:\dataset\lol\our485\high\718.png", r"E:\dataset\lol\our485\high\233.png",
+             r"E:\dataset\lol\our485\high\233.png", r"E:\dataset\lol\our485\high\84.png",
+             r"E:\dataset\lol\our485\high\721.png", r"E:\dataset\lol\our485\high\738.png",]
+    ptarget_darks = [r"E:\dataset\lol\our485\low\718.png", r"E:\dataset\lol\our485\low\233.png",
+                     r"E:\dataset\lol\our485\low\233.png", r"E:\dataset\lol\our485\low\84.png",
+                     r"E:\dataset\lol\our485\low\721.png", r"E:\dataset\lol\our485\low\738.png"]
+
+    for pimg, ptarget_dark in zip(pimgs, ptarget_darks):
+        pimg = r"E:\dataset\lol\our485\high\718.png"
+        ptarget_dark = r"E:\dataset\lol\our485\low\718.png"
+        img = cv2.imread(pimg)
+        target_dark = cv2.imread(ptarget_dark)
+        #plot_img(target_dark)
+        gamma, alpha, beta = find_params_from_target(img, target_dark)
+        print(gamma, alpha, beta)
+        pval, corr = pair_compare(img, target_dark, gamma, alpha, beta)
+        plt.close('all')
+        dict_res['Pearson'].append(corr)
+        dict_res['Kolmogorov-Smirnov'].append(pval)
+        dict_res['Image'].append(os.path.basename(pimg))
+    import pandas as pd
+    df = pd.DataFrame(dict_res)
+    df.to_excel('compare_augmetation')
+    img_dark = low_light_transform(img, 1, 1, 5)
     #
     # PSNR(img_dark, target_dark)
-    #plot_differ_param(r"E:\imagenet_test\bicycle\n02835271_870.JPEG")
+    plot_differ_param(r"E:\imagenet\imagenet_orig\bicycle\n02835271_870.JPEG")
     # plot_differ_noise(r"E:\imagenet_test\bicycle\n02835271_870.JPEG")
     ds_folder = PathDatasets.COCO2017_TEST.value
     alphas = (0.9, 0.9)

@@ -10,9 +10,10 @@ def plot_img(im2, title='image'):
     plot image + histogram colors
     """
     im2 = cv2.cvtColor(np.uint8(im2), cv2.COLOR_BGR2RGB)
-    fig, ax = plt.subplots(2,1)
-    ax[0].set_title(title)
+    fig, ax = plt.subplots(1, 2)
+    fig.suptitle(title, fontsize=16)
     ax[0].imshow(im2)
+    ax[0].axis('off')
     ax[1].hist(im2[..., 0].flatten(), 256, [0, 256], color='r')
     ax[1].hist(im2[..., 1].flatten(), 256, [0, 256], color='g')
     ax[1].hist(im2[..., 2].flatten(), 256, [0, 256], color='b')
