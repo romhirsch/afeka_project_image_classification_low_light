@@ -184,9 +184,7 @@ def PSNR(original, compressed):
     psnr = 20 * np.log10(max_pixel / np.sqrt(mse))
     return psnr
 
-
-if __name__ == '__main__':
-    save_folder = r"E:\coco_aug_1"
+def evaluate_algorithm():
     dict_res = {'Pearson':[], 'Kolmogorov-Smirnov':[], 'Image':[]}
     pimgs = [r"E:\dataset\lol\our485\high\718.png", r"E:\dataset\lol\our485\high\233.png",
              r"E:\dataset\lol\our485\high\233.png", r"E:\dataset\lol\our485\high\84.png",
@@ -196,8 +194,6 @@ if __name__ == '__main__':
                      r"E:\dataset\lol\our485\low\721.png", r"E:\dataset\lol\our485\low\738.png"]
 
     for pimg, ptarget_dark in zip(pimgs, ptarget_darks):
-        pimg = r"E:\dataset\lol\our485\high\718.png"
-        ptarget_dark = r"E:\dataset\lol\our485\low\718.png"
         img = cv2.imread(pimg)
         target_dark = cv2.imread(ptarget_dark)
         #plot_img(target_dark)
@@ -212,9 +208,11 @@ if __name__ == '__main__':
     df = pd.DataFrame(dict_res)
     df.to_excel('compare_augmetation')
     img_dark = low_light_transform(img, 1, 1, 5)
-    #
     # PSNR(img_dark, target_dark)
-    plot_differ_param(r"E:\imagenet\imagenet_orig\bicycle\n02835271_870.JPEG")
+
+if __name__ == '__main__':
+    save_folder = r"E:\coco_aug_1"
+    # plot_differ_param(r"E:\imagenet\imagenet_orig\bicycle\n02835271_870.JPEG")
     # plot_differ_noise(r"E:\imagenet_test\bicycle\n02835271_870.JPEG")
     ds_folder = PathDatasets.COCO2017_TEST.value
     alphas = (0.9, 0.9)

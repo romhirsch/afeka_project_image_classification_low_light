@@ -862,6 +862,12 @@ def plot_exmaple_ds(path):
         break
 
 class Test_options(Flag):
+    """
+    RATIO: running the "dark_ratio" function on the dataset, with a specified ratio
+    ONE_TEST: running the "run_one" function on the dataset
+    GRID_SEARCH: running the test with different parameters specified in "grid_search_params"
+    Enhance: running an enhancement method
+    """
     RATIO = auto()
     ONE_TEST = auto()
     GRID_SEARCH = auto()
@@ -882,8 +888,9 @@ if __name__ == '__main__':
     # create dataframe for results
     keys_gen = ['Model', 'Dataset', 'acc_val', 'Accuracy', 'Precision', 'Recall', 'F1-score'] + classes
     df_summery = pd.DataFrame(np.empty((300, len(keys_gen)))*np.nan, columns=keys_gen)
-
+    # plot exmaple:
     #plot_exmaple_ds(PathDatasets.EXDARK_TEST.value)
+
     # load test datasets
     #ds_tests, ds_names = load_test_dataset(preprocess_input)
 
