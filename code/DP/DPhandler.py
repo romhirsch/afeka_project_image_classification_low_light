@@ -31,6 +31,13 @@ from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.applications import EfficientNetB0, EfficientNetB4, EfficientNetV2B0
 from illumination_augmentation.augmenter import Augmenter
 from enum import Flag, auto
+from torch.utils.tensorboard import SummaryWriter
+from datetime import datetime
+from timeit import default_timer as timer
+from datetime import timedelta
+#%%
+import tensorboard
+writer = SummaryWriter('afeka_project')
 
 init()
 file_path = os.path.realpath(__file__)
@@ -63,6 +70,25 @@ def print_array_info(v):
                                                            eval("{}.shape".format(v)),
                                                            eval("{}.dtype".format(v))
                                                            ))
+
+class CustomCallback(tf.keras.callbacks.Callback):
+    def __init__(self, path_ds, batch_size):
+        self.ds = DPhandler.load_dataset(path_ds,
+                                         preprocess_input, classes, BATCH_SIZE=batch_size)
+
+
+    def on_epoch_end(self, epoch, logs=None):
+        keys = list(logs.keys())
+        res = self.model.evaluate(self.ds, verbose=0)
+        logs['dark_val_loss'] = res[0]
+        logs['dark_val_accuracy'] = res[1]
+        logs['dark_val_precision'] = res[2]
+        logs['dark_val_recall'] = res[3]
+        # print('exdark loss:', round(logs['dark_val_loss'],4),
+        #       ' exdark accuracy:',  round(logs['dark_val_accuracy'],4))
+
+        #print("End epoch {} of training; got log keys: {}".format(epoch, keys))
+
 
 def show_samples(array_of_images, label):
     n = array_of_images.shape[0]
@@ -261,7 +287,13 @@ class DPhandler(object):
         # Print a summary of the model
         self.model.summary()
         # Compile the model
-        self.model.compile(optimizer=Adam(learning_rate=self.lr), loss='categorical_crossentropy', metrics=['accuracy'])
+        self.model.compile(optimizer=Adam(learning_rate=self.lr),
+                           loss='categorical_crossentropy', metrics=['accuracy',
+                                                                     tf.keras.metrics.Precision(),
+                                                                     tf.keras.metrics.Recall()])
+        # tf.keras.metrics.TrueNegatives(),
+        # tf.keras.metrics.TruePositives(), tf.keras.metrics.FalsePositives(),
+        # tf.keras.metrics.FalseNegatives()
         # Print which layers are trainable
         print('layers trainable:')
         for i, layer in enumerate(self.model.layers):
@@ -413,14 +445,17 @@ class DPhandler(object):
         cb_early_stopper = EarlyStopping(monitor='val_loss', patience=self.early_stop_patience)
         cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=os.path.join(self.checkpoint_path, f'{self.name}.best.h5'), #ModelCheckpoint
                                                          save_weights_only=True,
-                                                         monitor='val_accuracy',
-                                                         mode='max',
-                                                         save_best_only=True)
+                                                         monitor='val_loss',
+                                                         mode='min',
+                                                         save_best_only=True,
+                                                         verbose=1)
+        logdir = "logs/scalars/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
         if lr_sch:
             lr_sched = LearningRateScheduler(lambda epoch: self.lr * (0.75 ** np.floor(epoch / 2)))
-            call_backs = [cp_callback, cb_early_stopper, lr_sched]
+            call_backs = [cp_callback, cb_early_stopper, lr_sched, CustomCallback(PathDatasets.EXDARK_VAL.value, self.batch_valid)]
         else:
-            call_backs = [cp_callback, cb_early_stopper]
+            call_backs = [cp_callback, cb_early_stopper, tensorboard_callback, CustomCallback(PathDatasets.EXDARK_VAL.value, self.batch_valid)]
 
         self.fit_history = self.model.fit(
             self.train_generator,
@@ -428,7 +463,8 @@ class DPhandler(object):
             epochs=self.num_epochs,
             validation_data=self.validation_generator,
             callbacks=call_backs,
-            validation_steps=self.step_per_epoch_valid)
+            validation_steps=self.step_per_epoch_valid
+            )
         # load best weights
         self.model.load_weights(os.path.join(self.checkpoint_path, f'{self.name}.best.h5'))
 
@@ -451,7 +487,9 @@ class DPhandler(object):
         plt.legend(['train', 'valid'])
         plt.tight_layout()
         plt.savefig(os.path.join(self.figure_path, f'{self.name}_acc_loss.png'))
-        return np.max(self.fit_history.history['val_accuracy'])
+        ind = np.argmax(self.fit_history.history['val_accuracy'])
+        return self.fit_history.history['val_accuracy'][ind], self.fit_history.history['dark_val_accuracy'][ind], \
+               self.fit_history.history['dark_val_accuracy'][ind], self.fit_history.history['dark_val_loss'][ind], ind
 
     @staticmethod
     def load_dataset(dataset_dir, preprocess, classes, BATCH_SIZE=1, image_size=224, shuffle=False):
@@ -503,7 +541,7 @@ class DPhandler(object):
         plt.savefig(os.path.join(self.figure_path, f'{self.name}_{ds_name}.png'))
         #plt.show(block=False)
 
-        return accuracy, score, precision_score, recall_score, f1_score, class_names_found
+        return fig, accuracy, score, precision_score, recall_score, f1_score, class_names_found
 
     def saved_model(self, path):
         self.model.save(path)
@@ -512,7 +550,7 @@ class DPhandler(object):
     def evaluate(self, ds, ds_name):
         pred, predicted_class_indices = self.predict(ds)
         #predicted_class_indices[predicted_class_indices==1].shape[0]/predicted_class_indices.shape[0]
-        acc, score, precision_score, recall_score, f1_score, class_names_found = self.confuction_mat(ds.labels, predicted_class_indices, list(ds.class_indices.keys()), ds_name)
+        fig, acc, score, precision_score, recall_score, f1_score, class_names_found = self.confuction_mat(ds.labels, predicted_class_indices, list(ds.class_indices.keys()), ds_name)
         return np.round(acc, 3), np.round(score, 3), round(precision_score, 3), round(recall_score, 3), round(f1_score, 3), class_names_found
 
 
@@ -669,7 +707,7 @@ def load_exdark_datasets():
                        'window': ds_ExDark_window, 'shadow': ds_ExDark_shadow, 'Twilight': ds_ExDark_Twilight}
     return ds_exdark_tests
 
-def load_test_dataset(preprocess, only_dark=False):
+def load_test_dataset(preprocess, only_dark=False, val=False):
     # load test datasets
     #ds_exdark_tests= load_exdark_datasets()
     #df_test = DPhandler.Create_df_dataset_from_directories([PathDatasets.COCO2017_TEST.value], percent=1)
@@ -684,9 +722,13 @@ def load_test_dataset(preprocess, only_dark=False):
         ds_tests = [ds_ExDark_test] + ds_augs #+ list(ds_exdark_tests.values())
         ds_names = ['ExDark_test'] + ['level1', 'level2', 'level3', 'level4'] #+ list(ds_exdark_tests.keys())
     else:
-        ds_test = DPhandler.load_dataset(PathDatasets.COCO2017_TEST.value, preprocess, classes)
-        ds_tests = [ds_test, ds_ExDark_test] + ds_augs #+ list(ds_exdark_tests.values())
-        ds_names = ['Test', 'ExDark_test'] + ['level1', 'level2', 'level3', 'level4'] #+ list(ds_exdark_tests.keys())
+        if val:
+            ds_tests = [DPhandler.load_dataset(PathDatasets.EXDARK_VAL.value, preprocess, classes)]
+            ds_names = ['ExDark_val']
+        else:
+            ds_test = DPhandler.load_dataset(PathDatasets.COCO2017_TEST.value, preprocess, classes)
+            ds_tests = [ds_test, ds_ExDark_test] + ds_augs #+ list(ds_exdark_tests.values())
+            ds_names = ['Test', 'ExDark_test'] + ['level1', 'level2', 'level3', 'level4'] #+ list(ds_exdark_tests.keys())
 
     return ds_tests, ds_names
 
@@ -732,8 +774,8 @@ def dark_ratio(params, do_train, real_dark_train, ds_tests, ds_names, train_dire
             probability_dark = 0
 
         print(colored(f"{ModelName}", 'green'))
-        checkpoint_path, figure_path, \
-        checkpoint_path, figure_path, saved_models_path = get_directories_and_paths(ModelName)
+        checkpoint_path, figure_path,\
+        saved_models_path = get_directories_and_paths(ModelName)
         if do_train == False:
             # load our trained model
             dp = load_saved_model(saved_models_path, ModelName, figure_path)
@@ -749,7 +791,6 @@ def dark_ratio(params, do_train, real_dark_train, ds_tests, ds_names, train_dire
 
 def run_one(params, do_train, train_directories, ds_tests, ds_names, df_summery, do_test=True):
     print(colored(f"{params['ModelName']}", 'green'))
-    checkpoint_path, figure_path, \
     checkpoint_path, figure_path, saved_models_path = get_directories_and_paths(params['ModelName'])
     if do_train == False:
         # load our trained model
@@ -805,21 +846,27 @@ def run_train(image_size, weights, probability_dark, ModelName,
     # Fit the model
     dp.fit(lr_schedule)
     # Plot the accuracy and loss curves and get the validation accuracy
-    acc_val = dp.plot_acc_loss()
+    acc_val, acc_val_exdark, loss_val, loss_dark_val, best_epoc = dp.plot_acc_loss()
     ind = 0 if np.all(df_summery['Model'].isna()) else df_summery[~df_summery['Model'].isna()].index[-1]+1
+    df_summery.loc[ind, 'Dataset'] = 'Train'
     df_summery.loc[ind, 'acc_val'] = np.round(acc_val, 2)
+    df_summery.loc[ind, 'acc_val_exdark'] = np.round(acc_val_exdark, 2)
+    df_summery.loc[ind, 'loss_val'] =loss_val
+    df_summery.loc[ind, 'loss_dark_val'] = loss_dark_val
     df_summery.loc[ind, 'Model'] = dp.name
+    df_summery.loc[ind, 'best_epoc'] = best_epoc
+
     dp.saved_model(saved_models_path)
     return dp, df_summery
 
 def get_model_parameters():
     dict_parameters = {
-    'ModelName': 'EfficientNetV2B0_FineTurning',#'EfficientNetV2B0_FineTurning',EfficientNetV2B0_FineTurning_real_dark
+    'ModelName': 'EfficientNetV2B0_GS',#'EfficientNetV2B0_FineTurning',EfficientNetV2B0_FineTurning_real_dark
     'pretrain_model': EfficientNetV2B0,
     'classificationLayers': [Flatten(), Dense(len(classes), activation='softmax')],
     'weights': 'imagenet',
     'image_size': 224,
-    'num_epochs': 10,
+    'num_epochs': 30,
     'batch_training': 32,
     'batch_valid': 32,
     # learning rate
@@ -834,7 +881,7 @@ def get_model_parameters():
     # fine-turing (trainable=True)
     'trainable': True,
     # call back function params
-    'early_stop_patience': 10,
+    'early_stop_patience': 5,
     }
     return dict_parameters
 
@@ -877,14 +924,12 @@ if __name__ == '__main__':
     params = get_model_parameters()
     train_directories = [PathDatasets.COCO2017_TRAIN.value]
     ratio = np.array([0, 20, 40, 60, 80, 100])
-    do_train = False
+    do_train = True
     real_dark_train = False
     seed_aug = 0
-    test_option = Test_options.Enhance
+    test_option = Test_options.GRID_SEARCH
 
     enhance_methods = {'AHE': preproceessing_adaptive_histogram_equalization, 'HE': preprocessing_histogram_equalization}
-    grid_search_params = {'lr_schedule': True, 'batch_training': [32, 64, 128],
-                          'batch_valid': [32, 64, 128], 'ModelName': ['grid1', 'grid2', 'grid3']}
     # create dataframe for results
     keys_gen = ['Model', 'Dataset', 'acc_val', 'Accuracy', 'Precision', 'Recall', 'F1-score'] + classes
     df_summery = pd.DataFrame(np.empty((300, len(keys_gen)))*np.nan, columns=keys_gen)
@@ -901,12 +946,55 @@ if __name__ == '__main__':
         ds_tests, ds_names = load_test_dataset(preprocess_input)
         run_one(params, do_train, train_directories, ds_tests, ds_names, df_summery)
     if Test_options.GRID_SEARCH in test_option:
-        ds_tests, ds_names = load_test_dataset(preprocess_input)
-        max_size = max([len(v) for v in grid_search_params.values()])
-        for i in range(max_size):
-            params = edit_parameters_grid_search(grid_search_params, params, i)
-            df_summery = run_one(params, do_train, train_directories, ds_tests, ds_names, df_summery)
-            df_summery.to_excel(f"{params['ModelName']}.xlsx")
+        lr_list = np.array([1e-2, 1e-3, 1e-4])
+        bz_list = np.array([2 ** 6, 2 ** 5, 2 ** 4])
+        lr_schedule_list = np.array([True, False])
+        probability_dark_list = np.array([0, 0.4, 0.6, 0.8, 1])
+        lr_s, bz_s, probability_dark_s, lr_schedule_s = np.meshgrid(lr_list, bz_list, probability_dark_list, lr_schedule_list)
+        lr_s = lr_s.flatten()
+        bz_s = bz_s.flatten()
+        probability_dark_s = probability_dark_s.flatten()
+        lr_schedule_s = lr_schedule_s.flatten().astype(bool)
+        ds_tests, ds_names = load_test_dataset(preprocess_input, False, False)
+        for i, (lr, bz, pdark, lr_sch) in enumerate(zip(lr_s, bz_s, probability_dark_s, lr_schedule_s)):
+            df_summery = pd.DataFrame(np.empty((300, len(keys_gen))) * np.nan, columns=keys_gen)
+            print(f'=============== GridSearch % {round(i/bz_s.shape[0], 2)} {i}/{bz_s.shape[0]}===============')
+            print(f'learning rate {lr} \nbatch size {bz}  \ndark_probability {pdark} \nlr_sh {lr_sch}')
+            start = timer()
+            params['ModelName'] = params['ModelName'] + f'{i}'
+            params['learning_rate'] = lr
+            params['batch_training'] = bz
+            params['batch_valid'] = bz
+            params['probability_dark'] = pdark
+            params['lr_schedule'] = lr_sch
+            df_summery = run_one(params, do_train, train_directories, ds_tests, ds_names, df_summery, do_test=False)
+            #df_summery.to_excel(f"{params['ModelName']}.xlsx")
+            params_save = params.copy()
+            params_save.pop('classificationLayers')
+            params_save.pop('pretrain_model')
+            params_save.pop('trainable')
+            params_save.pop('batch_training')
+            params_save.pop('batch_valid')
+            params_save['batch_size'] = bz
+            params_save['best_epoc'] = int(df_summery.loc[0, 'best_epoc'])
+            dict_metric = dict()
+            for dataset_i in df_summery['Dataset'].dropna().unique():
+                for matric in ['acc_val', 'acc_val_exdark', 'loss_val', 'loss_dark_val']:
+                    dict_metric[dataset_i + '_' + matric] = float(df_summery.loc[df_summery['Dataset'] == dataset_i, matric])
+            for k, v in params_save.items():
+                try:
+                    params_save[k] = float(v)
+                except:
+                    pass
+            for k, v in dict_metric.items():
+                try:
+                    params_save[k] = float(v)
+                except:
+                    pass
+            writer.add_hparams(params_save, dict_metric)
+            end = timer()
+            print('time elapsed: ', timedelta(seconds=end - start))
+
     if Test_options.Enhance in test_option:
         # do Enhance image
         for name_pre, preprocess in enhance_methods.items():

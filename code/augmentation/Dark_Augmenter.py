@@ -57,8 +57,6 @@ def pair_compare(img, target_dark, gamma, alpha, beta):
     img = np.float32(img)/255
     img_dark = low_light_transform(img, alpha, beta, gamma)
     img_dark = blur(img_dark)
-    #img_dark = read_noise(img_dark, 0.0001)
-    #img_dark = random_noise(img_dark, mode='gaussian', var=0.0001)
     img_dark = uint8(img_dark*255)
     img = uint8(img*255)
     plot_img(img, 'normal light image')
