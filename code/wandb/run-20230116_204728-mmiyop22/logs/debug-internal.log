@@ -1,0 +1,224 @@
+2023-01-16 20:47:28,864 INFO    StreamThr :27948 [internal.py:wandb_internal():87] W&B internal server running at pid: 27948, started at: 2023-01-16 20:47:28.863196
+2023-01-16 20:47:28,867 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status
+2023-01-16 20:47:28,868 INFO    WriterThread:27948 [datastore.py:open_for_write():85] open: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\run-mmiyop22.wandb
+2023-01-16 20:47:28,870 DEBUG   SenderThread:27948 [sender.py:send():334] send: header
+2023-01-16 20:47:28,894 DEBUG   SenderThread:27948 [sender.py:send():334] send: run
+2023-01-16 20:47:29,632 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: check_version
+2023-01-16 20:47:29,634 INFO    SenderThread:27948 [dir_watcher.py:__init__():216] watching files in: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files
+2023-01-16 20:47:29,635 INFO    SenderThread:27948 [sender.py:_start_run_threads():1065] run started: mmiyop22 with start time 1673894848.863196
+2023-01-16 20:47:29,635 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: summary_record
+2023-01-16 20:47:29,635 INFO    SenderThread:27948 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-16 20:47:29,636 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: check_version
+2023-01-16 20:47:30,418 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: run_start
+2023-01-16 20:47:30,438 DEBUG   HandlerThread:27948 [system_info.py:__init__():31] System info init
+2023-01-16 20:47:30,438 DEBUG   HandlerThread:27948 [system_info.py:__init__():46] System info init done
+2023-01-16 20:47:30,438 INFO    HandlerThread:27948 [system_monitor.py:start():151] Starting system monitor
+2023-01-16 20:47:30,439 INFO    SystemMonitor:27948 [system_monitor.py:_start():116] Starting system asset monitoring threads
+2023-01-16 20:47:30,439 INFO    HandlerThread:27948 [system_monitor.py:probe():172] Collecting system info
+2023-01-16 20:47:30,443 INFO    SystemMonitor:27948 [interfaces.py:start():168] Started cpu
+2023-01-16 20:47:30,443 INFO    SystemMonitor:27948 [interfaces.py:start():168] Started disk
+2023-01-16 20:47:30,444 INFO    SystemMonitor:27948 [interfaces.py:start():168] Started gpu
+2023-01-16 20:47:30,444 INFO    SystemMonitor:27948 [interfaces.py:start():168] Started memory
+2023-01-16 20:47:30,452 INFO    SystemMonitor:27948 [interfaces.py:start():168] Started network
+2023-01-16 20:47:30,464 DEBUG   HandlerThread:27948 [system_info.py:probe():195] Probing system
+2023-01-16 20:47:30,466 DEBUG   HandlerThread:27948 [system_info.py:_probe_git():180] Probing git
+2023-01-16 20:47:30,517 DEBUG   HandlerThread:27948 [system_info.py:_probe_git():188] Probing git done
+2023-01-16 20:47:30,517 DEBUG   HandlerThread:27948 [system_info.py:probe():241] Probing system done
+2023-01-16 20:47:30,518 DEBUG   HandlerThread:27948 [system_monitor.py:probe():181] {'os': 'Windows-10-10.0.22621-SP0', 'python': '3.9.12', 'heartbeatAt': '2023-01-16T18:47:30.464391', 'startedAt': '2023-01-16T18:47:28.852193', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'C:/Users/rom21/OneDrive/Desktop/git_project/Final_project_afeka/afeka_project_image_classification_low_light/code/test.py', 'codePath': 'code\\test.py', 'git': {'remote': 'https://github.com/romhirsch/afeka_project_image_classification_low_light.git', 'commit': 'b235305e8dd566af53a7e67e2323fdb05505c6a5'}, 'email': '66785843+romhirsch@users.noreply.github.com', 'root': 'C:/Users/rom21/OneDrive/Desktop/git_project/Final_project_afeka/afeka_project_image_classification_low_light', 'host': 'DESKTOP-5FT71UO', 'username': 'rom21', 'executable': 'C:\\Users\\rom21\\anaconda3\\envs\\tf\\python.exe', 'cpu_count': 8, 'cpu_count_logical': 16, 'cpu_freq': {'current': 3801.0, 'min': 0.0, 'max': 3801.0}, 'cpu_freq_per_core': [{'current': 3801.0, 'min': 0.0, 'max': 3801.0}], 'disk': {'total': 930.740779876709, 'used': 694.0991363525391}, 'gpu': 'NVIDIA GeForce RTX 3080', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 3080', 'memory_total': 10737418240}], 'memory': {'total': 31.94710922241211}}
+2023-01-16 20:47:30,518 INFO    HandlerThread:27948 [system_monitor.py:probe():182] Finished collecting system info
+2023-01-16 20:47:30,518 INFO    HandlerThread:27948 [system_monitor.py:probe():185] Publishing system info
+2023-01-16 20:47:30,519 DEBUG   HandlerThread:27948 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-01-16 20:47:30,521 DEBUG   HandlerThread:27948 [system_info.py:_save_pip():67] Saving pip packages done
+2023-01-16 20:47:30,521 DEBUG   HandlerThread:27948 [system_info.py:_save_conda():74] Saving list of conda packages installed into the current environment
+2023-01-16 20:47:30,536 ERROR   HandlerThread:27948 [system_info.py:_save_conda():85] Error saving conda packages: [WinError 2] The system cannot find the file specified
+Traceback (most recent call last):
+  File "C:\Users\rom21\anaconda3\envs\tf\lib\site-packages\wandb\sdk\internal\system\system_info.py", line 81, in _save_conda
+    subprocess.call(
+  File "C:\Users\rom21\anaconda3\envs\tf\lib\subprocess.py", line 349, in call
+    with Popen(*popenargs, **kwargs) as p:
+  File "C:\Users\rom21\anaconda3\envs\tf\lib\subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\rom21\anaconda3\envs\tf\lib\subprocess.py", line 1420, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+  File "C:\Program Files\JetBrains\PyCharm Community Edition 2022.1.2\plugins\python-ce\helpers\pydev\_pydev_bundle\pydev_monkey.py", line 575, in new_CreateProcess
+    return getattr(_subprocess, original_name)(app_name, patch_arg_str_win(cmd_line), *args)
+FileNotFoundError: [WinError 2] The system cannot find the file specified
+2023-01-16 20:47:30,538 DEBUG   HandlerThread:27948 [system_info.py:_save_conda():86] Saving conda packages done
+2023-01-16 20:47:30,539 INFO    HandlerThread:27948 [system_monitor.py:probe():187] Finished publishing system info
+2023-01-16 20:47:30,551 DEBUG   SenderThread:27948 [sender.py:send():334] send: files
+2023-01-16 20:47:30,551 INFO    SenderThread:27948 [sender.py:_save_file():1319] saving file wandb-metadata.json with policy now
+2023-01-16 20:47:30,562 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: stop_status
+2023-01-16 20:47:30,563 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: stop_status
+2023-01-16 20:47:30,642 INFO    Thread-23 :27948 [dir_watcher.py:_on_file_created():275] file/dir created: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\wandb-metadata.json
+2023-01-16 20:47:30,642 INFO    Thread-23 :27948 [dir_watcher.py:_on_file_created():275] file/dir created: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\conda-environment.yaml
+2023-01-16 20:47:30,643 INFO    Thread-23 :27948 [dir_watcher.py:_on_file_created():275] file/dir created: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\wandb-summary.json
+2023-01-16 20:47:30,643 INFO    Thread-23 :27948 [dir_watcher.py:_on_file_created():275] file/dir created: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\requirements.txt
+2023-01-16 20:47:30,857 DEBUG   SenderThread:27948 [sender.py:send():334] send: telemetry
+2023-01-16 20:47:31,381 INFO    Thread-28 :27948 [upload_job.py:push():143] Uploaded file C:\Users\rom21\AppData\Local\Temp\tmpwc9z8bfxwandb\ls1w454p-wandb-metadata.json
+2023-01-16 20:47:33,876 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:47:38,906 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:47:43,942 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:47:45,554 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:47:45,554 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:47:48,964 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:47:50,583 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:47:53,992 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:47:55,603 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:47:59,028 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:47:59,818 INFO    Thread-23 :27948 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\config.yaml
+2023-01-16 20:48:00,628 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:48:04,445 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:48:05,661 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:48:09,480 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:48:10,691 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:48:14,507 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:48:15,717 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:48:19,537 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:48:20,751 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:48:24,559 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:48:25,781 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:48:29,577 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:48:30,457 DEBUG   SystemMonitor:27948 [system_monitor.py:_start():130] Starting system metrics aggregation loop
+2023-01-16 20:48:30,458 DEBUG   SenderThread:27948 [sender.py:send():334] send: stats
+2023-01-16 20:48:30,802 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:48:35,492 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:48:35,841 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:48:40,520 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:48:40,876 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:48:45,549 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:48:45,900 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:48:50,577 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:48:50,935 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: keepalive
+2023-01-16 20:48:55,074 DEBUG   SenderThread:27948 [sender.py:send():334] send: exit
+2023-01-16 20:48:55,074 INFO    SenderThread:27948 [sender.py:send_exit():557] handling exit code: 0
+2023-01-16 20:48:55,074 INFO    SenderThread:27948 [sender.py:send_exit():559] handling runtime: 84
+2023-01-16 20:48:55,076 INFO    SenderThread:27948 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-16 20:48:55,077 INFO    SenderThread:27948 [sender.py:send_exit():565] send defer
+2023-01-16 20:48:55,077 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:48:55,077 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 0
+2023-01-16 20:48:55,077 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:48:55,077 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 0
+2023-01-16 20:48:55,078 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 1
+2023-01-16 20:48:55,078 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:48:55,078 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 1
+2023-01-16 20:48:55,078 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:48:55,078 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 1
+2023-01-16 20:48:55,078 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 2
+2023-01-16 20:48:55,078 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:48:55,078 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 2
+2023-01-16 20:48:55,078 INFO    HandlerThread:27948 [system_monitor.py:finish():161] Stopping system monitor
+2023-01-16 20:48:55,079 DEBUG   SystemMonitor:27948 [system_monitor.py:_start():137] Finished system metrics aggregation loop
+2023-01-16 20:48:55,079 DEBUG   SystemMonitor:27948 [system_monitor.py:_start():141] Publishing last batch of metrics
+2023-01-16 20:48:55,080 INFO    HandlerThread:27948 [interfaces.py:finish():175] Joined cpu
+2023-01-16 20:48:55,087 INFO    HandlerThread:27948 [interfaces.py:finish():175] Joined disk
+2023-01-16 20:48:55,128 INFO    HandlerThread:27948 [interfaces.py:finish():175] Joined gpu
+2023-01-16 20:48:55,128 INFO    HandlerThread:27948 [interfaces.py:finish():175] Joined memory
+2023-01-16 20:48:55,128 INFO    HandlerThread:27948 [interfaces.py:finish():175] Joined network
+2023-01-16 20:48:55,129 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:48:55,129 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 2
+2023-01-16 20:48:55,129 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 3
+2023-01-16 20:48:55,129 DEBUG   SenderThread:27948 [sender.py:send():334] send: stats
+2023-01-16 20:48:55,130 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:48:55,130 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 3
+2023-01-16 20:48:55,130 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:48:55,130 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 3
+2023-01-16 20:48:55,131 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 4
+2023-01-16 20:48:55,131 INFO    Thread-23 :27948 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\wandb-summary.json
+2023-01-16 20:48:55,131 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:48:55,131 INFO    Thread-23 :27948 [dir_watcher.py:_on_file_created():275] file/dir created: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\output.log
+2023-01-16 20:48:55,131 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 4
+2023-01-16 20:48:55,132 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:48:55,132 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 4
+2023-01-16 20:48:55,132 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 5
+2023-01-16 20:48:55,132 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:48:55,132 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 5
+2023-01-16 20:48:55,132 DEBUG   SenderThread:27948 [sender.py:send():334] send: summary
+2023-01-16 20:48:55,133 INFO    SenderThread:27948 [sender.py:_save_file():1319] saving file wandb-summary.json with policy end
+2023-01-16 20:48:55,133 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:48:55,133 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 5
+2023-01-16 20:48:55,133 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 6
+2023-01-16 20:48:55,134 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:48:55,134 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 6
+2023-01-16 20:48:55,134 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:48:55,134 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 6
+2023-01-16 20:48:55,134 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 7
+2023-01-16 20:48:55,134 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:48:55,134 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:48:55,135 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 7
+2023-01-16 20:48:55,135 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:48:55,135 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 7
+2023-01-16 20:48:56,088 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: poll_exit
+2023-01-16 20:48:56,136 INFO    Thread-23 :27948 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\wandb-summary.json
+2023-01-16 20:48:57,081 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 8
+2023-01-16 20:48:57,082 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: poll_exit
+2023-01-16 20:48:57,082 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:48:57,082 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 8
+2023-01-16 20:48:57,082 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:48:57,082 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 8
+2023-01-16 20:48:57,093 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 9
+2023-01-16 20:48:57,093 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:48:57,094 DEBUG   SenderThread:27948 [sender.py:send():334] send: artifact
+2023-01-16 20:48:57,094 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 9
+2023-01-16 20:48:57,097 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: poll_exit
+2023-01-16 20:48:57,143 INFO    Thread-23 :27948 [dir_watcher.py:_on_file_modified():292] file/dir modified: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\output.log
+2023-01-16 20:48:59,288 INFO    SenderThread:27948 [sender.py:send_artifact():1415] sent artifact job-https___github.com_romhirsch_afeka_project_image_classification_low_light.git_code_test.py - {'id': 'QXJ0aWZhY3Q6MzI4MjkxOTA0', 'digest': '41a776cfe96d8b40eeb003c61c990d7c', 'state': 'COMMITTED', 'aliases': [{'artifactCollectionName': 'job-https___github.com_romhirsch_afeka_project_image_classification_low_light.git_code_test.py', 'alias': 'v0'}], 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjQ5NzQ3OTMz', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6MzI4MjkxOTA0', 'versionIndex': 0}}, 'version': 'v0'}
+2023-01-16 20:48:59,289 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:48:59,289 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 9
+2023-01-16 20:48:59,289 INFO    SenderThread:27948 [dir_watcher.py:finish():362] shutting down directory watcher
+2023-01-16 20:49:00,157 INFO    SenderThread:27948 [dir_watcher.py:finish():392] scan: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files
+2023-01-16 20:49:00,157 INFO    SenderThread:27948 [dir_watcher.py:finish():406] scan save: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\conda-environment.yaml conda-environment.yaml
+2023-01-16 20:49:00,158 INFO    SenderThread:27948 [dir_watcher.py:finish():406] scan save: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\config.yaml config.yaml
+2023-01-16 20:49:00,158 INFO    SenderThread:27948 [dir_watcher.py:finish():406] scan save: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\output.log output.log
+2023-01-16 20:49:00,163 INFO    SenderThread:27948 [dir_watcher.py:finish():406] scan save: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\requirements.txt requirements.txt
+2023-01-16 20:49:00,169 INFO    SenderThread:27948 [dir_watcher.py:finish():406] scan save: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\wandb-metadata.json wandb-metadata.json
+2023-01-16 20:49:00,169 INFO    SenderThread:27948 [dir_watcher.py:finish():406] scan save: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\wandb-summary.json wandb-summary.json
+2023-01-16 20:49:00,175 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 10
+2023-01-16 20:49:00,176 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: poll_exit
+2023-01-16 20:49:00,176 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:49:00,176 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 10
+2023-01-16 20:49:00,182 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:49:00,182 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 10
+2023-01-16 20:49:00,182 INFO    SenderThread:27948 [file_pusher.py:finish():160] shutting down file pusher
+2023-01-16 20:49:00,980 INFO    Thread-31 :27948 [upload_job.py:push():143] Uploaded file C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\requirements.txt
+2023-01-16 20:49:00,984 INFO    Thread-30 :27948 [upload_job.py:push():143] Uploaded file C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\output.log
+2023-01-16 20:49:00,990 INFO    Thread-29 :27948 [upload_job.py:push():143] Uploaded file C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\config.yaml
+2023-01-16 20:49:01,018 INFO    Thread-32 :27948 [upload_job.py:push():143] Uploaded file C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\files\wandb-summary.json
+2023-01-16 20:49:01,227 INFO    Thread-22 :27948 [sender.py:transition_state():585] send defer: 11
+2023-01-16 20:49:01,227 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:49:01,227 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 11
+2023-01-16 20:49:01,228 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:49:01,228 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 11
+2023-01-16 20:49:01,228 INFO    SenderThread:27948 [file_pusher.py:join():165] waiting for file pusher
+2023-01-16 20:49:01,228 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 12
+2023-01-16 20:49:01,228 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:49:01,228 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 12
+2023-01-16 20:49:01,228 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:49:01,228 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 12
+2023-01-16 20:49:01,824 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 13
+2023-01-16 20:49:01,824 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:49:01,824 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 13
+2023-01-16 20:49:01,825 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:49:01,825 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 13
+2023-01-16 20:49:01,825 INFO    SenderThread:27948 [sender.py:transition_state():585] send defer: 14
+2023-01-16 20:49:01,825 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: defer
+2023-01-16 20:49:01,825 DEBUG   SenderThread:27948 [sender.py:send():334] send: final
+2023-01-16 20:49:01,825 INFO    HandlerThread:27948 [handler.py:handle_request_defer():170] handle defer: 14
+2023-01-16 20:49:01,825 DEBUG   SenderThread:27948 [sender.py:send():334] send: footer
+2023-01-16 20:49:01,826 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: defer
+2023-01-16 20:49:01,826 INFO    SenderThread:27948 [sender.py:send_request_defer():581] handle sender defer: 14
+2023-01-16 20:49:01,827 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: poll_exit
+2023-01-16 20:49:01,827 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: server_info
+2023-01-16 20:49:01,827 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: get_summary
+2023-01-16 20:49:01,827 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: poll_exit
+2023-01-16 20:49:01,827 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: sampled_history
+2023-01-16 20:49:01,827 DEBUG   SenderThread:27948 [sender.py:send_request():361] send_request: server_info
+2023-01-16 20:49:02,158 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: status_report
+2023-01-16 20:49:02,159 INFO    MainThread:27948 [wandb_run.py:_footer_history_summary_info():3427] rendering history
+2023-01-16 20:49:02,159 INFO    MainThread:27948 [wandb_run.py:_footer_history_summary_info():3459] rendering summary
+2023-01-16 20:49:02,159 INFO    MainThread:27948 [wandb_run.py:_footer_sync_info():3383] logging synced files
+2023-01-16 20:49:02,159 DEBUG   HandlerThread:27948 [handler.py:handle_request():144] handle_request: shutdown
+2023-01-16 20:49:02,160 INFO    HandlerThread:27948 [handler.py:finish():841] shutting down handler
+2023-01-16 20:49:03,161 INFO    WriterThread:27948 [datastore.py:close():299] close: C:\Users\rom21\OneDrive\Desktop\git_project\Final_project_afeka\afeka_project_image_classification_low_light\code\wandb\run-20230116_204728-mmiyop22\run-mmiyop22.wandb
+2023-01-16 20:49:03,161 INFO    SenderThread:27948 [sender.py:finish():1491] shutting down sender
+2023-01-16 20:49:03,161 INFO    SenderThread:27948 [file_pusher.py:finish():160] shutting down file pusher
+2023-01-16 20:49:03,161 INFO    SenderThread:27948 [file_pusher.py:join():165] waiting for file pusher

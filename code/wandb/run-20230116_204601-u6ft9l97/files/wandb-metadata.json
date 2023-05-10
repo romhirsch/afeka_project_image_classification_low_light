@@ -1,0 +1,50 @@
+{
+    "os": "Windows-10-10.0.22621-SP0",
+    "python": "3.9.12",
+    "heartbeatAt": "2023-01-16T18:46:02.836107",
+    "startedAt": "2023-01-16T18:46:01.053628",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "C:/Users/rom21/OneDrive/Desktop/git_project/Final_project_afeka/afeka_project_image_classification_low_light/code/test.py",
+    "codePath": "code\\test.py",
+    "git": {
+        "remote": "https://github.com/romhirsch/afeka_project_image_classification_low_light.git",
+        "commit": "b235305e8dd566af53a7e67e2323fdb05505c6a5"
+    },
+    "email": "66785843+romhirsch@users.noreply.github.com",
+    "root": "C:/Users/rom21/OneDrive/Desktop/git_project/Final_project_afeka/afeka_project_image_classification_low_light",
+    "host": "DESKTOP-5FT71UO",
+    "username": "rom21",
+    "executable": "C:\\Users\\rom21\\anaconda3\\envs\\tf\\python.exe",
+    "cpu_count": 8,
+    "cpu_count_logical": 16,
+    "cpu_freq": {
+        "current": 3801.0,
+        "min": 0.0,
+        "max": 3801.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3801.0,
+            "min": 0.0,
+            "max": 3801.0
+        }
+    ],
+    "disk": {
+        "total": 930.740779876709,
+        "used": 694.0779151916504
+    },
+    "gpu": "NVIDIA GeForce RTX 3080",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3080",
+            "memory_total": 10737418240
+        }
+    ],
+    "memory": {
+        "total": 31.94710922241211
+    }
+}
